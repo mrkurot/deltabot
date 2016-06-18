@@ -3,19 +3,36 @@
 from jabberbot import *
 import logging
 from datetime import datetime, timedelta
+from random import randint
 
 MSG_CAMP = "{0[1]} is camping {1} since {0[0]}!"
 MSG_CAMP_NOT_FOUND = "System {0} is not currently tracked"
 MSG_CAMP_LIST = "Camped systems:"
 MSG_CAMP_LIST_ITEM = "{1} -- {0[0]} by {0[1]}"
+
 MSG_UNCAMP_ALL = "You're now uncamped!"
 MSG_UNCAMP = "System {0} is now uncamped"
 MSG_UNCAMP_NOT_FOUND = "System {0} wasn't camped"
+
+MSG_INFO = "You can find most info you'd need in this thread: "\
+    "https://forum.pleaseignore.com/topic/81607-read-me-information-station-state-of-the-squad/"
+
+MSG_PING = "{0} get your asses here!"
+PING_LIST = ["rusrog [Δ Director]",
+             "Sheo [SubDir | FC | EFT V]",
+             "naioo[hr]"]
+
 MSG_CHECK_FORUMS = "Check the forums!"
+CHECK_FORUMS_CHANCE = 100
+
 MSG_UNKNOWN_COMMAND = "I can't recognize the command {0}"
+
 DATETIME_FORMAT = "%Y.%m.%d %H%M"
+
 DELTA_CHATROOM = "deltasquadron@chat.pleaseignore.com"
 DELTABOT_NICK = "deltabot"
+
+
 
 class DeltaBot(JabberBot):
 
@@ -28,9 +45,10 @@ class DeltaBot(JabberBot):
             self.log.debug(mess)
             # if args in self.camp_entries:
             node = mess.getFrom().getResource()
-            self.camp[args] = (datetime.utcnow(), node)
+            system = args.split(" ")[0]
+            self.camp[system] = (datetime.utcnow(), node)
             return MSG_CAMP.format(
-                format_value_pair(self.camp[args]), args)
+                format_value_pair(self.camp[system]), system)
             # else:
             #     return MSG_CAMP_NOT_FOUND.format(args)
 
@@ -44,11 +62,12 @@ class DeltaBot(JabberBot):
                     self.camp.pop(k)
             return MSG_UNCAMP_ALL
         else:
-            if args in self.camp:
-                self.camp.pop(args)
-                return MSG_UNCAMP.format(args)
+            system = args.split(" ")[0]
+            if system in self.camp:
+                self.camp.pop(system)
+                return MSG_UNCAMP.format(system)
             else:
-                return MSG_UNCAMP_NOT_FOUND.format(args)
+                return MSG_UNCAMP_NOT_FOUND.format(system)
 
     @botcmd
     def foo(self, mess, args):
@@ -59,11 +78,19 @@ class DeltaBot(JabberBot):
         """Chemo command against cancer nickname"""
         return "rusrog [Δ Director]"
 
+    @botcmd
+    def ping(self, mess, args):
+        return MSG_PING.format(", ".join(PING_LIST))
+
+    @botcmd
+    def info(self, mess, args):
+        return MSG_INFO
+
 
     def unknown_command(self, mess, cmd, args):
-        if mess.getBody().endswith("?"):
+        if mess.getBody().endswith("?") and randint(0, CHECK_FORUMS_CHANCE) == 0:
             return MSG_CHECK_FORUMS
-        elif cmd.startswith("!"):
+        elif cmd.startswith("!") and len(cmd) > 1:
             return MSG_UNKNOWN_COMMAND.format(cmd)
         else:
             return ''
