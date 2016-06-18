@@ -25,8 +25,8 @@ class DeltaBot(JabberBot):
         else:
             self.log.debug(mess)
             # if args in self.camp_entries:
-            self.camp[args] = (datetime.utcnow(),
-                                    mess.getTo().getNode())
+            node = mess.getFrom().getResource()
+            self.camp[args] = (datetime.utcnow(), node)
             return MSG_CAMP.format(
                 format_value_pair(self.camp[args]), args)
             # else:
@@ -35,7 +35,7 @@ class DeltaBot(JabberBot):
     @botcmd
     def uncamp(self, mess, args):
         """Remove from the list of camped systems all that you're camping. If followed by the name of a system, removes the system from the list"""
-        node = mess.getTo().getNode()
+        node = mess.getFrom().getResource()
         if len(args) == 0:
             for k, v in self.camp.items():
                 if v[1] == node:
