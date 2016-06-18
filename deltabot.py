@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from jabberbot import *
 import logging
 from datetime import datetime, timedelta
@@ -51,6 +53,11 @@ class DeltaBot(JabberBot):
     @botcmd
     def foo(self, mess, args):
         return "bar"
+
+    @botcmd
+    def pingrusrog(self, mess, args):
+        """Chemo command against cancer nickname"""
+        return "rusrog [Δ Director]"
 
 
     def unknown_command(self, mess, cmd, args):
