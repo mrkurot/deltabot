@@ -48,7 +48,6 @@ DELTA_CHATROOM = "deltasquadron@chat.pleaseignore.com"
 DELTABOT_NICK = "deltabot"
 
 
-
 class DeltaBot(JabberBot):
 
     @botcmd
@@ -115,19 +114,18 @@ class DeltaBot(JabberBot):
 
     @botcmd
     def doctrines(self, mess, args):
-        return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
+        return self.get_doctrines(mess, args)
 
     @botcmd
     def doctrine(self, mess, args):
-        if len(args) == 0:
-            return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
-        else:
+        return self.get_doctrines(mess, args)
+
+    def get_doctrines(self, mess, args):
+        if len(args) > 0:
             request = args.split(" ")[0]
             if request in DOCTRINES:
                 return DOCTRINES[request]
-            else:
-                return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
-
+        return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
 
     def unknown_command(self, mess, cmd, args):
         if mess.getBody().endswith("?") and randint(0, CHECK_FORUMS_CHANCE) == 0:
