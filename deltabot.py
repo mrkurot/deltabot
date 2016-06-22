@@ -27,6 +27,7 @@ MSG_HAULING = "https://forum.pleaseignore.com/topic/82966-deltasquad-jf/"
 MSG_BUMP = "naioo[hr] your services are required!"
 
 MSG_PWNED = "and pwned!"
+MSG_PWNED_SPECIFIC = "Holy shit! {0} is gaypwned!"
 
 MSG_DOCTRINES = "Our current doctrines are: {}\n"\
                 "Type !doctrine <name> to see more info"
@@ -110,6 +111,8 @@ class DeltaBot(JabberBot):
 
     @botcmd(hidden=True)
     def urgay(self, mess, args):
+        if len(args) > 0:
+            return MSG_PWNED_SPECIFIC.format(args)
         return MSG_PWNED
 
     @botcmd
