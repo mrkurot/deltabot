@@ -22,6 +22,21 @@ PING_LIST = ["rusrog [Δ Director]",
              "Sheo [SubDir | FC | EFT V]",
              "naioo[hr]"]
 
+MSG_HAULING = "https://forum.pleaseignore.com/topic/82966-deltasquad-jf/"
+
+MSG_BUMP = "naioo[hr] your services are required!"
+
+MSG_PWNED = "and pwned!"
+
+MSG_DOCTRINES = "Our current doctrines are: {}\n"\
+                "Type !doctrine <name> to see more info"
+DOCTRINES = {
+    "cactusfleet": "https://forum.pleaseignore.com/topic/85270-the-phantasm-post/",
+    "kiteybullshit": "Check the MOTD of the in-game TEST DELTA channel",
+    "machfleet": "https://forum.pleaseignore.com/topic/85269-the-machariel-post/",
+    "stratiosfleet": "https://forum.pleaseignore.com/topic/85267-the-actual-stratios-post/"
+}
+
 MSG_CHECK_FORUMS = "Check the forums!"
 CHECK_FORUMS_CHANCE = 100
 
@@ -85,6 +100,33 @@ class DeltaBot(JabberBot):
     @botcmd
     def info(self, mess, args):
         return MSG_INFO
+
+    @botcmd
+    def hauling(self, mess, args):
+        return MSG_HAULING
+
+    @botcmd
+    def bump(self, mess, args):
+        return MSG_BUMP
+
+    @botcmd
+    def urgay(self, mess, args):
+        return MSG_PWNED
+
+    @botcmd
+    def doctrines(self, mess, args):
+        return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
+
+    @botcmd
+    def doctrine(self, mess, args):
+        if len(args) == 0:
+            return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
+        else:
+            request = args.split(" ")[0]
+            if request in DOCTRINES:
+                return DOCTRINES[request]
+            else:
+                return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
 
 
     def unknown_command(self, mess, cmd, args):
