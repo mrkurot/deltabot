@@ -83,11 +83,11 @@ class DeltaBot(JabberBot):
             else:
                 return MSG_UNCAMP_NOT_FOUND.format(system)
 
-    @botcmd
+    @botcmd(hidden=True)
     def foo(self, mess, args):
         return "bar"
 
-    @botcmd
+    @botcmd(hidden=True)
     def pingrusrog(self, mess, args):
         """Chemo command against cancer nickname"""
         return "rusrog [Δ Director]"
@@ -104,11 +104,11 @@ class DeltaBot(JabberBot):
     def hauling(self, mess, args):
         return MSG_HAULING
 
-    @botcmd
+    @botcmd(hidden=True)
     def bump(self, mess, args):
         return MSG_BUMP
 
-    @botcmd
+    @botcmd(hidden=True)
     def urgay(self, mess, args):
         return MSG_PWNED
 
