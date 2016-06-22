@@ -22,6 +22,8 @@ PING_LIST = ["rusrog [Δ Director]",
              "Sheo [SubDir | FC | EFT V]",
              "naioo[hr]"]
 
+MSG_HAULING = "https://forum.pleaseignore.com/topic/82966-deltasquad-jf/"
+
 MSG_CHECK_FORUMS = "Check the forums!"
 CHECK_FORUMS_CHANCE = 100
 
@@ -85,6 +87,10 @@ class DeltaBot(JabberBot):
     @botcmd
     def info(self, mess, args):
         return MSG_INFO
+
+    @botcmd
+    def hauling(self, mess, args):
+        return MSG_HAULING
 
 
     def unknown_command(self, mess, cmd, args):
