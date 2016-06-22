@@ -27,6 +27,7 @@ MSG_HAULING = "https://forum.pleaseignore.com/topic/82966-deltasquad-jf/"
 MSG_BUMP = "naioo[hr] your services are required!"
 
 MSG_PWNED = "and pwned!"
+MSG_PWNED_SPECIFIC = "Holy shit! {0} is gaypwned!"
 
 MSG_DOCTRINES = "Our current doctrines are: {}\n"\
                 "Type !doctrine <name> to see more info"
@@ -46,7 +47,6 @@ DATETIME_FORMAT = "%Y.%m.%d %H%M"
 
 DELTA_CHATROOM = "deltasquadron@chat.pleaseignore.com"
 DELTABOT_NICK = "deltabot"
-
 
 
 class DeltaBot(JabberBot):
@@ -84,11 +84,11 @@ class DeltaBot(JabberBot):
             else:
                 return MSG_UNCAMP_NOT_FOUND.format(system)
 
-    @botcmd
+    @botcmd(hidden=True)
     def foo(self, mess, args):
         return "bar"
 
-    @botcmd
+    @botcmd(hidden=True)
     def pingrusrog(self, mess, args):
         """Chemo command against cancer nickname"""
         return "rusrog [Δ Director]"
@@ -105,29 +105,30 @@ class DeltaBot(JabberBot):
     def hauling(self, mess, args):
         return MSG_HAULING
 
-    @botcmd
+    @botcmd(hidden=True)
     def bump(self, mess, args):
         return MSG_BUMP
 
-    @botcmd
+    @botcmd(hidden=True)
     def urgay(self, mess, args):
+        if len(args) > 0:
+            return MSG_PWNED_SPECIFIC.format(args)
         return MSG_PWNED
 
     @botcmd
     def doctrines(self, mess, args):
-        return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
+        return self.get_doctrines(mess, args)
 
     @botcmd
     def doctrine(self, mess, args):
-        if len(args) == 0:
-            return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
-        else:
+        return self.get_doctrines(mess, args)
+
+    def get_doctrines(self, mess, args):
+        if len(args) > 0:
             request = args.split(" ")[0]
             if request in DOCTRINES:
                 return DOCTRINES[request]
-            else:
-                return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
-
+        return MSG_DOCTRINES.format(", ".join(doctrine for doctrine in DOCTRINES))
 
     def unknown_command(self, mess, cmd, args):
         if mess.getBody().endswith("?") and randint(0, CHECK_FORUMS_CHANCE) == 0:
